@@ -36,6 +36,13 @@ function App() {
             bahaha it's jay's {jaysDaysOfWeek[new Date().getDay()]}
           </h1>
 
+          <img
+            src="/jaylightsavings/ok.png"
+            alt="Floating Image"
+            className="absolute top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 object-cover rounded-full shadow-lg opacity-80"
+            style={{ animation: "float 5s ease-in-out infinite" }}
+          />
+
           <div className="flex space-x-4">
             {statusBars.map((bar, index) => (
               <StatusBar {...bar} key={index} />

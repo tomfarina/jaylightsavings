@@ -1,4 +1,8 @@
-import Image from "next/image";
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import "./styles/globals.css";
+
 import StatusBar from "./components/statusbar";
 
 type StatusBarProps = {
@@ -23,16 +27,19 @@ const jaysDaysOfWeek = [
   "Sunday",
 ];
 
-export default function Home() {
+function App() {
   return (
-    <div className="grid  items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <div className="text-2xl">
+    <div className="justify-items-center min-h-screen p-8 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <div className="text-2xl pb-10">
         bahaha it's jay's {jaysDaysOfWeek[new Date().getDay()]}
       </div>
-
-      {statusBars.map((bar, index) => (
-        <StatusBar {...bar} key={index} />
-      ))}
+      <div className="flex flex-row w-full">
+        {statusBars.map((bar, index) => (
+          <StatusBar {...bar} key={index} />
+        ))}
+      </div>
     </div>
   );
 }
+
+export default App;

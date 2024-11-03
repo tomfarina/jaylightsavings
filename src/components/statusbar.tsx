@@ -41,10 +41,10 @@ const StatusBar: React.FC<StatusBarProps> = (props) => {
     calculateCompletion();
 
     return () => clearInterval(intervalId); // Cleanup on unmount
-  }, [startDay, startHour, endDay, endHour]);
+  }, [startDay, startHour, endDay, endHour, calculateCompletion]);
 
   return (
-    <div>
+    <div className="m-auto">
       <div className="p-4">
         <p className="text-lg font-semibold mb-2">{`${name}'s ${week} is ${completion}% over.`}</p>
         <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">

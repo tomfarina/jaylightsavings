@@ -68,8 +68,8 @@ const StatusBar: React.FC<StatusBarProps> = (props) => {
       <div className="relative w-full bg-gray-200 rounded-full h-6 overflow-hidden">
         <div
           className={classNames(
-            "bg-blue-500  h-full text-xs font-semibold text-white text-center p-1 leading-none",
-            { "bg-green-500": isWeekend }
+            "bg-blue-900 h-full text-xs font-semibold text-white text-center p-1 leading-none",
+            { "bg-green-900": isWeekend }
           )}
           style={{ width: `${completion}%` }}
         >
@@ -80,7 +80,7 @@ const StatusBar: React.FC<StatusBarProps> = (props) => {
           segments?.map((segment, index) => (
             <div
               key={index}
-              className="absolute bottom-0 h-[20%] bg-red-500 opacity-75"
+              className="absolute bottom-0 h-[10%] bg-red-500 opacity-55"
               style={{
                 left: `${segment.start}%`,
                 width: `${segment.end - segment.start}%`,

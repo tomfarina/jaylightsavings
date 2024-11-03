@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import classNames from "classnames";
 
 type StatusBarProps = {
   startDay: number;
@@ -18,9 +19,8 @@ const weekString = "Week";
 const StatusBar: React.FC<StatusBarProps> = (props) => {
   const { startDay, startHour, endDay, endHour, name } = props;
   const [completion, setCompletion] = useState<string>("0");
-  const [week, setWeek] = useState<string>(weekString);
+  const [isWeekend, setIsWeekend] = useState<boolean>(false);
 
-  console.log("init'd");
   const totalWorkweekHours =
     24 - startHour + endHour + (endDay - startDay - 1) * 24;
   const dailyHours = endHour - startHour;
@@ -31,12 +31,10 @@ const StatusBar: React.FC<StatusBarProps> = (props) => {
     end: ((i * 24 + dailyHours) / totalWorkweekHours) * 100,
   }));
 
-  console.log(segments);
-
   const calculateCompletion = (): any => {
     const weekCompletion = calculateWeekCompletion(props);
     if (weekCompletion === "100") {
-      setWeek(weekendString);
+      setIsWeekend(true);
       const weekendCompletion = calculateWeekCompletion({
         startDay: endDay,
         startHour: endHour,
@@ -46,6 +44,7 @@ const StatusBar: React.FC<StatusBarProps> = (props) => {
       });
       setCompletion(weekendCompletion);
     } else {
+      setIsWeekend(false);
       setCompletion(weekCompletion);
     }
   };
@@ -63,16 +62,21 @@ const StatusBar: React.FC<StatusBarProps> = (props) => {
 
   return (
     <div className="flex-1">
-      <p className="text-gray-700 font-medium mb-1">{`${name}'s ${week} is ${completion}% over.`}</p>
+      <p className="text-gray-700 font-medium mb-1">{`${name}'s ${
+        isWeekend ? weekendString : weekString
+      } is ${completion}% over.`}</p>
       <div className="relative w-full bg-gray-200 rounded-full h-6 overflow-hidden">
         <div
-          className="bg-blue-500 h-full text-xs font-semibold text-white text-center p-1 leading-none"
+          className={classNames(
+            "bg-blue-500  h-full text-xs font-semibold text-white text-center p-1 leading-none",
+            { "bg-green-500": isWeekend }
+          )}
           style={{ width: `${completion}%` }}
         >
           {completion}%
         </div>
 
-        {week !== weekendString &&
+        {!isWeekend &&
           segments?.map((segment, index) => (
             <div
               key={index}

@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 
 type StatusBarProps = {
@@ -44,16 +42,14 @@ const StatusBar: React.FC<StatusBarProps> = (props) => {
   }, [startDay, startHour, endDay, endHour, calculateCompletion]);
 
   return (
-    <div className="m-auto">
-      <div className="p-4">
-        <p className="text-lg font-semibold mb-2">{`${name}'s ${week} is ${completion}% over.`}</p>
-        <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
-          <div
-            className="bg-blue-500 h-full text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-            style={{ width: `${completion}%` }}
-          >
-            {completion}%
-          </div>
+    <div className="flex-1">
+      <p className="text-gray-700 font-medium mb-1">{`${name}'s ${week} is ${completion}% over.`}</p>
+      <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden">
+        <div
+          className="bg-blue-500 h-full text-xs font-semibold text-white text-center p-1 leading-none"
+          style={{ width: `${completion}%` }}
+        >
+          {completion}%
         </div>
       </div>
     </div>

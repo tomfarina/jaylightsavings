@@ -29,14 +29,19 @@ const jaysDaysOfWeek = [
 
 function App() {
   return (
-    <div className="justify-items-center min-h-screen p-8 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <div className="text-2xl pb-10">
-        bahaha it's jay's {jaysDaysOfWeek[new Date().getDay()]}
-      </div>
-      <div className="flex flex-row w-full">
-        {statusBars.map((bar, index) => (
-          <StatusBar {...bar} key={index} />
-        ))}
+    <div>
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="w-full max-w-2xl p-6 bg-white rounded-lg shadow-md">
+          <h1 className="text-2xl font-semibold text-gray-800 text-center mb-6">
+            bahaha it's jay's {jaysDaysOfWeek[new Date().getDay()]}
+          </h1>
+
+          <div className="flex space-x-4">
+            {statusBars.map((bar, index) => (
+              <StatusBar {...bar} key={index} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

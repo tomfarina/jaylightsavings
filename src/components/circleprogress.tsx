@@ -26,14 +26,30 @@ const innerCircumference = 2 * Math.PI * innerRadius;
 
 const CircleProgress: React.FC<StatusBarProps> = (props) => {
   const { startDay, startHour, endDay, endHour, name } = props;
-  const [completion, setCompletion] = useState<number>(0);
+  const [outerCompletion, setOuterCompletion] = useState<number>(0);
   const [innerCompletion, setInnerCompletion] = useState<number>(0);
   const [isWeekend, setIsWeekend] = useState<boolean>(false);
 
   const outerProgressOffset =
-    outerCircumference - (completion / 100) * outerCircumference;
+    outerCircumference - (outerCompletion / 100) * outerCircumference;
   const innerProgressOffset =
     innerCircumference - (innerCompletion / 100) * innerCircumference;
+
+  // Calculate the position of the outer indicator based on outer completion
+  const outerAngle = (outerCompletion / 100) * 360;
+  const outerRadians = outerAngle * (Math.PI / 180);
+  const outerIndicatorX =
+    outerRadius + strokeWidth + outerRadius * Math.cos(outerRadians);
+  const outerIndicatorY =
+    outerRadius + strokeWidth + outerRadius * Math.sin(outerRadians);
+
+  // Calculate the position of the inner indicator based on inner completion
+  const innerAngle = (innerCompletion / 100) * 360;
+  const innerRadians = innerAngle * (Math.PI / 180);
+  const innerIndicatorX =
+    outerRadius + strokeWidth + innerRadius * Math.cos(innerRadians);
+  const innerIndicatorY =
+    outerRadius + strokeWidth + innerRadius * Math.sin(innerRadians);
 
   const totalWorkweekHours =
     24 - startHour + endHour + (endDay - startDay - 1) * 24;
@@ -57,11 +73,11 @@ const CircleProgress: React.FC<StatusBarProps> = (props) => {
         endHour: startHour,
         name: name,
       });
-      setCompletion(weekendCompletion);
+      setOuterCompletion(weekendCompletion);
     } else {
       setInnerCompletion(calculateInnerCompletion(props));
       setIsWeekend(false);
-      setCompletion(weekCompletion);
+      setOuterCompletion(weekCompletion);
     }
   };
 
@@ -78,9 +94,6 @@ const CircleProgress: React.FC<StatusBarProps> = (props) => {
 
   return (
     <div className="flex flex-col items-center px-10">
-      {/* <p className="text-gray-700 font-medium mb-2">{`${name}'s ${
-        isWeekend ? weekendString : weekString
-      } is ${completion.toFixed(2)}% over.`}</p> */}
       <p className="text-gray-700 font-medium mb-2">{`${name}'s ${
         isWeekend ? weekendString : weekString
       }`}</p>
@@ -95,7 +108,7 @@ const CircleProgress: React.FC<StatusBarProps> = (props) => {
           cy={outerRadius + strokeWidth}
           r={outerRadius}
           fill="none"
-          stroke="#E5E7EB" // gray-200 color
+          stroke="#E5E7EB"
           strokeWidth={strokeWidth}
         />
 
@@ -112,14 +125,14 @@ const CircleProgress: React.FC<StatusBarProps> = (props) => {
                 cy={outerRadius + strokeWidth}
                 r={outerRadius}
                 fill="none"
-                stroke="#EF4444" // red-500 color for segments
+                stroke="#EF4444"
                 strokeWidth={strokeWidth}
                 strokeDasharray={`${segmentLength} ${
                   outerCircumference - segmentLength
                 }`}
                 strokeDashoffset={outerCircumference - segmentStart}
                 opacity={0.15}
-                className="transition-opacity duration-300 ease-out"
+                className="transition-opacity duration-1000 ease-out"
               />
             );
           })}
@@ -130,13 +143,24 @@ const CircleProgress: React.FC<StatusBarProps> = (props) => {
           cy={outerRadius + strokeWidth}
           r={outerRadius}
           fill="none"
-          stroke={isWeekend ? "#10B981" : "#1D4ED8"} // green-900 or blue-900
+          stroke={isWeekend ? "#10B981" : "#1D4ED8"}
           strokeWidth={strokeWidth}
           strokeDasharray={outerCircumference}
           strokeDashoffset={outerProgressOffset}
           strokeLinecap="round"
-          className="transition-all duration-300 ease-out"
+          className="transition-all duration-1000 ease-out"
         />
+
+        {/* Outer Subtle Indicator Dot */}
+        {!isWeekend && (
+          <circle
+            cx={outerIndicatorX}
+            cy={outerIndicatorY}
+            r="2.5" // Smaller size for the dot
+            fill="#000000"
+            opacity="0.5" // Lower opacity for a more discrete look
+          />
+        )}
 
         {/* Inner Background Circle */}
         <circle
@@ -144,7 +168,7 @@ const CircleProgress: React.FC<StatusBarProps> = (props) => {
           cy={outerRadius + strokeWidth}
           r={innerRadius}
           fill="none"
-          stroke="#E5E7EB" // gray-200 color for inner background
+          stroke="#E5E7EB"
           strokeWidth={strokeWidth}
         />
 
@@ -154,13 +178,24 @@ const CircleProgress: React.FC<StatusBarProps> = (props) => {
           cy={outerRadius + strokeWidth}
           r={innerRadius}
           fill="none"
-          stroke="#10B981" // green color for inner progress
+          stroke="#10B981"
           strokeWidth={strokeWidth}
           strokeDasharray={innerCircumference}
           strokeDashoffset={innerProgressOffset}
           strokeLinecap="round"
-          className="transition-all duration-300 ease-out"
+          className="transition-all duration-1000 ease-out"
         />
+
+        {/* Inner Subtle Indicator Dot */}
+        {innerCompletion < 100 && (
+          <circle
+            cx={innerIndicatorX}
+            cy={innerIndicatorY}
+            r="2.5" // Smaller size for the inner dot
+            fill="#000000"
+            opacity="0.5" // Lower opacity for a more discrete look
+          />
+        )}
 
         {/* Centered Percentage Text */}
         <text
@@ -170,7 +205,7 @@ const CircleProgress: React.FC<StatusBarProps> = (props) => {
           dy=".3em"
           className="text-xl font-semibold fill-gray-700"
         >
-          {completion.toFixed(2)}%
+          {outerCompletion.toFixed(2)}%
         </text>
       </svg>
     </div>

@@ -152,49 +152,49 @@ const CircleProgress: React.FC<StatusBarProps> = (props) => {
           })}
 
         {/* Outer Subtle Indicator Dot */}
+        <circle
+          cx={outerIndicatorX}
+          cy={outerIndicatorY}
+          r="2.5" // Smaller size for the dot
+          fill="#000000"
+          opacity="0.5" // Lower opacity for a more discrete look
+        />
+
         {!isWeekend && (
-          <circle
-            cx={outerIndicatorX}
-            cy={outerIndicatorY}
-            r="2.5" // Smaller size for the dot
-            fill="#000000"
-            opacity="0.5" // Lower opacity for a more discrete look
-          />
-        )}
-
-        {/* Inner Background Circle */}
-        <circle
-          cx={outerRadius + strokeWidth}
-          cy={outerRadius + strokeWidth}
-          r={innerRadius}
-          fill="none"
-          stroke="#E5E7EB"
-          strokeWidth={strokeWidth}
-        />
-
-        {/* Inner Progress Circle */}
-        <circle
-          cx={outerRadius + strokeWidth}
-          cy={outerRadius + strokeWidth}
-          r={innerRadius}
-          fill="none"
-          stroke="#10B981"
-          strokeWidth={strokeWidth}
-          strokeDasharray={innerCircumference}
-          strokeDashoffset={innerProgressOffset}
-          strokeLinecap="round"
-          className="transition-all duration-1000 ease-out"
-        />
-
-        {/* Inner Subtle Indicator Dot */}
-        {innerCompletion < 100 && (
-          <circle
-            cx={innerIndicatorX}
-            cy={innerIndicatorY}
-            r="2.5" // Smaller size for the inner dot
-            fill="#000000"
-            opacity="0.5" // Lower opacity for a more discrete look
-          />
+          <>
+            {/* Inner Background Circle */}
+            <circle
+              cx={outerRadius + strokeWidth}
+              cy={outerRadius + strokeWidth}
+              r={innerRadius}
+              fill="none"
+              stroke="#E5E7EB"
+              strokeWidth={strokeWidth}
+            />
+            {/* Inner Progress Circle */}
+            <circle
+              cx={outerRadius + strokeWidth}
+              cy={outerRadius + strokeWidth}
+              r={innerRadius}
+              fill="none"
+              stroke="#10B981"
+              strokeWidth={strokeWidth}
+              strokeDasharray={innerCircumference}
+              strokeDashoffset={innerProgressOffset}
+              strokeLinecap="round"
+              className="transition-all duration-1000 ease-out"
+            />
+            {/* Inner Subtle Indicator Dot */}
+            {innerCompletion < 100 && (
+              <circle
+                cx={innerIndicatorX}
+                cy={innerIndicatorY}
+                r="2.5" // Smaller size for the inner dot
+                fill="#000000"
+                opacity="0.5" // Lower opacity for a more discrete look
+              />
+            )}
+          </>
         )}
 
         {/* Centered Percentage Text */}
@@ -203,10 +203,29 @@ const CircleProgress: React.FC<StatusBarProps> = (props) => {
           y="50%"
           textAnchor="middle"
           dy=".3em"
-          className="text-xl font-semibold fill-gray-700"
+          className={classNames("text-xl font-semibold fill-gray-700", {
+            "fill-green-700": isWeekend,
+          })}
         >
           {outerCompletion.toFixed(2)}%
         </text>
+
+        {!isWeekend && (
+          <text
+            x="50%"
+            y="60%"
+            textAnchor="middle"
+            dy=".3em"
+            className={classNames(
+              "text-xs font-semibold fill-gray-700 opacity-60",
+              {
+                "fill-green-700": innerCompletion >= 100,
+              }
+            )}
+          >
+            {innerCompletion.toFixed(2)}%
+          </text>
+        )}
       </svg>
     </div>
   );

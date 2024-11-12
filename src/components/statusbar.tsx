@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
 import classNames from "classnames";
+export type Segment = {
+  start: number;
+  end: number;
+};
 
 type StatusBarProps = {
+  name: string;
   startDay: number;
   startHour: number;
   endDay: number;
   endHour: number;
-  name: string;
-};
-
-export type Segment = {
-  start: number;
-  end: number;
 };
 
 const weekendString = "Weekend";

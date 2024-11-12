@@ -1,9 +1,8 @@
-import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import "./styles/globals.css";
 
 import StatusBar from "./components/statusbar";
+import CircleProgress from "./components/circleprogress";
 
 type StatusBarProps = {
   name: string;
@@ -43,9 +42,9 @@ function App() {
             style={{ animation: "float 5s ease-in-out infinite" }}
           />
 
-          <div className="flex space-x-4">
+          <div className="flex justify-center gap-10">
             {statusBars.map((bar, index) => (
-              <StatusBar {...bar} key={index} />
+              <CircleProgress {...bar} key={index} />
             ))}
           </div>
         </div>

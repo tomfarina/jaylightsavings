@@ -112,31 +112,6 @@ const CircleProgress: React.FC<StatusBarProps> = (props) => {
           strokeWidth={strokeWidth}
         />
 
-        {/* Outer Segment Overlays */}
-        {!isWeekend &&
-          segments?.map((segment, index) => {
-            const segmentStart = (segment.start / 100) * outerCircumference;
-            const segmentLength =
-              ((segment.end - segment.start) / 100) * outerCircumference;
-            return (
-              <circle
-                key={index}
-                cx={outerRadius + strokeWidth}
-                cy={outerRadius + strokeWidth}
-                r={outerRadius}
-                fill="none"
-                stroke="#EF4444"
-                strokeWidth={strokeWidth}
-                strokeDasharray={`${segmentLength} ${
-                  outerCircumference - segmentLength
-                }`}
-                strokeDashoffset={outerCircumference - segmentStart}
-                opacity={0.15}
-                className="transition-opacity duration-1000 ease-out"
-              />
-            );
-          })}
-
         {/* Outer Progress Circle */}
         <circle
           cx={outerRadius + strokeWidth}
@@ -150,6 +125,31 @@ const CircleProgress: React.FC<StatusBarProps> = (props) => {
           strokeLinecap="round"
           className="transition-all duration-1000 ease-out"
         />
+
+        {/* Outer Segment Overlays */}
+        {!isWeekend &&
+          segments?.map((segment, index) => {
+            const segmentStart = (segment.start / 100) * outerCircumference;
+            const segmentLength =
+              ((segment.end - segment.start) / 100) * outerCircumference;
+            return (
+              <circle
+                key={index}
+                cx={outerRadius + strokeWidth}
+                cy={outerRadius + strokeWidth}
+                r={outerRadius}
+                fill="none"
+                stroke="#000000"
+                strokeWidth={strokeWidth}
+                strokeDasharray={`${segmentLength} ${
+                  outerCircumference - segmentLength
+                }`}
+                strokeDashoffset={outerCircumference - segmentStart}
+                opacity={0.15}
+                className="transition-opacity duration-1000 ease-out"
+              />
+            );
+          })}
 
         {/* Outer Subtle Indicator Dot */}
         {!isWeekend && (

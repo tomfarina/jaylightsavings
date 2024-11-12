@@ -13,7 +13,7 @@ type StatusBarProps = {
 };
 
 const statusBars: StatusBarProps[] = [
-  { name: "Jay", startDay: 0, startHour: 4, endDay: 3, endHour: 15 },
+  { name: "jay", startDay: 0, startHour: 4, endDay: 3, endHour: 15 },
   { name: "Normal Person", startDay: 1, startHour: 9, endDay: 5, endHour: 17 },
 ];
 const jaysDaysOfWeek = [

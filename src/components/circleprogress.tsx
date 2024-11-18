@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import classNames from "classnames";
 
 export type Segment = {
@@ -61,7 +61,7 @@ const CircleProgress: React.FC<StatusBarProps> = (props) => {
     end: ((i * 24 + dailyHours) / totalWorkweekHours) * 100,
   }));
 
-  const calculateCompletion = (): any => {
+  const calculateCompletion = useCallback((): void => {
     const weekCompletion = calculateWeekCompletion(props);
     if (weekCompletion === 100) {
       setInnerCompletion(100);
@@ -79,7 +79,7 @@ const CircleProgress: React.FC<StatusBarProps> = (props) => {
       setIsWeekend(false);
       setOuterCompletion(weekCompletion);
     }
-  };
+  }, [props, endDay, endHour, startDay, startHour]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -236,12 +236,19 @@ const calculateInnerCompletion = (props: StatusBarProps): number => {
 
   const now = new Date();
   const currentHour = now.getHours();
+  const currentMinutes = now.getMinutes();
 
-  if (currentHour >= startHour && currentHour <= endHour) {
-    return ((currentHour - startHour) / (endHour - startHour)) * 100;
+  // Calculate the total time span in minutes
+  const totalMinutes = (endHour - startHour) * 60;
+
+  // Calculate the elapsed time in minutes
+  const elapsedMinutes = (currentHour - startHour) * 60 + currentMinutes;
+
+  if (elapsedMinutes >= 0 && elapsedMinutes <= totalMinutes) {
+    return (elapsedMinutes / totalMinutes) * 100;
   }
 
-  return 100;
+  return elapsedMinutes > totalMinutes ? 100 : 0;
 };
 
 const calculateWeekCompletion = (props: StatusBarProps): number => {
